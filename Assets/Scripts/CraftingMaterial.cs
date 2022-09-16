@@ -42,6 +42,6 @@ public class CraftingMaterial : MonoBehaviour
 
     private void SetColor()
     {
-        render.material.color = Color.Lerp(baseColor, fullHeatColor, heatPercentage);
+        render.material.color = Color.Lerp(baseColor, fullHeatColor, heatPercentage * heatPercentage);
     }
 }

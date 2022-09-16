@@ -5,6 +5,5 @@ using UnityEngine;
 public class MaterialDispenser : MaterialManipulator
 {
     public CraftingMaterial materialPrefab;
-
     public override CraftingMaterial RemoveMaterial() => Instantiate(materialPrefab);
 }

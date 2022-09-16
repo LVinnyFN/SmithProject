@@ -57,7 +57,6 @@ public class Player : MonoBehaviour
     public CraftingMaterial RemoveMaterial()
     {
         CraftingMaterial material = holdingMaterial;
-        holdingMaterial.transform.SetParent(null);
         holdingMaterial = null;
         return material;
     }
