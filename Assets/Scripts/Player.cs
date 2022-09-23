@@ -9,11 +9,15 @@ public class Player : MonoBehaviour
     [SerializeField]private CraftingMaterial holdingMaterial;
 
     public float speed = 5;
+    public float dashCooldown = 5;
+    private bool canDash = true;
+    private bool isDashing = false;
     
     void Update()
     {
-        Move();
+        if(!isDashing) Move();
         if(Input.GetKeyDown(KeyCode.F)) DiscardMaterial();
+        if(Input.GetKeyDown(KeyCode.LeftShift) && canDash) Dash();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -42,6 +46,31 @@ public class Player : MonoBehaviour
             transform.position += transform.forward * input.magnitude * speed * Time.deltaTime;
         }
     }    
+
+    private void Dash()
+    {
+        Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        if (input.magnitude > 0)
+        {
+            StartCoroutine(DashCoroutine(input));
+        }
+    }
+    private IEnumerator DashCoroutine(Vector3 input)
+    {
+        canDash = false;
+        isDashing = true;
+        transform.forward = input;
+        float counter = 0;
+        while(counter < 0.5f)
+        {
+            transform.position += transform.forward * input.magnitude * speed * 2f * Time.deltaTime;
+            counter += Time.deltaTime;
+            yield return null;
+        }
+        isDashing = false;
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
 
     public void HoldMaterial(CraftingMaterial material) 
     {
